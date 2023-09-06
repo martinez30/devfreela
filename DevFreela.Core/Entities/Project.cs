@@ -18,7 +18,7 @@ public class Project : BaseEntity
     public ProjectStatusEnum Status { get; private set; }
     public List<ProjectComment> Comments { get; private set; }
     
-    protected Project(string title, string description, int clientId, int freelancerId, decimal totalCost)
+    public Project(string title, string description, int clientId, int freelancerId, decimal totalCost)
     {
         Title = title;
         Description = description;
