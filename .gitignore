@@ -1,0 +1,6 @@
+*.DotSettings.user
+global.json
+.idea/
+
+bin
+obj
