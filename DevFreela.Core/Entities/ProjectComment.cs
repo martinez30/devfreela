@@ -7,7 +7,7 @@ public class ProjectComment : BaseEntity
     public int UserId { get; private set; }
     public DateTime CreatedAt { get; private set; }
     
-    protected ProjectComment(string content, int projectId, int userId)
+    public ProjectComment(string content, int projectId, int userId)
     {
         Content = content;
         ProjectId = projectId;

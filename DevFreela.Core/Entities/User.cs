@@ -23,4 +23,11 @@ public class User : BaseEntity
         OwnedProjects = new List<Project>();
         FreelancerProjects = new List<Project>();
     }
+
+    public void Update(string fullname, string email, DateTime birthDate)
+    {
+        FullName = fullname;
+        Email = email;
+        BirthDate = birthDate;
+    }
 }
