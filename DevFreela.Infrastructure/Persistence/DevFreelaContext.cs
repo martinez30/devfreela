@@ -5,6 +5,7 @@ namespace DevFreela.Infrastructure.Persistence;
 public class DevFreelaContext
 {
     public List<Project> Projects { get; set; }
+    public List<ProjectComment> ProjectComments { get; set; }
     public List<User> Users { get; set; }
     public List<Skill> Skills { get; set; }
 
@@ -30,5 +31,7 @@ public class DevFreelaContext
             new Skill("SQL"),
             new Skill("AspNetCore"),
         };
+
+        ProjectComments = new List<ProjectComment>();
     }
 }
