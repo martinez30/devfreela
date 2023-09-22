@@ -1,5 +1,9 @@
-using DevFreela.Application.InputModels;
-using DevFreela.Application.Services.Interfaces;
+using DevFreela.Application.Commands.CreateComment;
+using DevFreela.Application.Commands.CreateProject;
+using DevFreela.Application.Commands.UpdateProject;
+using DevFreela.Application.Queries.GetAllProjectsQuery;
+using DevFreela.Application.Queries.GetProjectByIdQuery;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DevFreela.API.Controllers;
@@ -7,24 +11,24 @@ namespace DevFreela.API.Controllers;
 [ApiController, Route("api/[controller]")]
 public class ProjectController : ControllerBase
 {
-    private readonly IProjectService _service;
+    private readonly IMediator _mediator;
 
-    public ProjectController(IProjectService service)
+    public ProjectController(IMediator mediator)
     {
-        _service = service;
+        _mediator = mediator;
     }
     
     [HttpGet]
-    public IActionResult Get(string query)
+    public async Task<IActionResult> Get(string query)
     {
-        var projects = _service.GetAll(query);
+        var projects = await _mediator.Send(new GetAllProjectsQuery(query));
         return Ok(projects);
     }
     
     [HttpGet("{id}")]
-    public IActionResult GetById(int id)
+    public async Task<IActionResult> GetById(int id)
     {
-        var project = _service.GetById(id);
+        var project = await _mediator.Send(new GetProjectByIdQuery(id));
 
         if (project == null)
         {
@@ -35,21 +39,28 @@ public class ProjectController : ControllerBase
     }
     
     [HttpPost]
-    public IActionResult Post([FromBody] NewProjectInputModel command)
+    public async Task<IActionResult> Post([FromBody] CreateProjectCommand command)
     {
         if (command.Title.Length > 50)
         {
             return BadRequest();
         }
-        
-        var id = _service.Create(command);
+
+        var id = await _mediator.Send(command);
         return CreatedAtAction(nameof(GetById), new { id = id }, command);
+    }
+
+    [HttpPost("{id}/comment")]
+    public async Task<IActionResult> PostCommment(int id, [FromBody] CreateCommentCommand command)
+    {
+        await _mediator.Send(command);
+        return NoContent();
     }
     
     [HttpPut("{id}")]
-    public IActionResult Put(int id, [FromBody] UpdateProjectInputModel command)
+    public async Task<ActionResult> Put(int id, [FromBody] UpdateProjectCommand command)
     {
-        _service.Update(command);
+        await _mediator.Send(command);
         return NoContent();
     }
 }

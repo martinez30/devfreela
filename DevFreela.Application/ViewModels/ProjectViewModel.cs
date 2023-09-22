@@ -6,6 +6,13 @@ public class ProjectViewModel
     public string Title { get; set; }
     public DateTime CreatedAt { get; set; }
 
+    public ProjectViewModel(int id, string title, DateTime createdAt)
+    {
+        Id = id;
+        Title = title;
+        CreatedAt = createdAt;
+    }
+    
     public ProjectViewModel(string title, DateTime createdAt)
     {
         Title = title;
